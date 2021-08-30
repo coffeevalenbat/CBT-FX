@@ -3,7 +3,7 @@
 This is my attempt at writing a sound effect driver that's natively compatible with [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020/) (Instead of having to use register values or converting other assembly drivers to GBDK-2020), It's made to be used alongside the [FX Hammer editor](https://www.pouet.net/prod.php?which=17337). It's aimed at people who want good sounding sound effects but don't wanna have to do custom solutions, feel free to use the translated example SFX's too (see [here](https://github.com/datguywitha3ds/CBT-FX/blob/26282e0e63d0cdbda31acf8a2430c4651243244e/src/main.c#L15)).
 
 # Usage
-1. Create your sound effects first in first in the before mentioned [FX Hammer editor](https://www.pouet.net/prod.php?which=17337).
+1. Create your sound effects first in the before mentioned [FX Hammer editor](https://www.pouet.net/prod.php?which=17337).
  2. Copy both files in the `include` folder into your project, be sure to also add `#include "cbtfx.h"` (Or wherever you place the files) into whatever C files will use CBT-FX.
  3. Create a `const unsigned char` 2D array, the 2nd array length should be `CBTFX_LENGTH`.
  4. Use the `CBTFX_FRAME` macro to create each frame of your sound effect, this will make translating the sound effects from FX Hammer easier;
@@ -23,7 +23,7 @@ const unsigned char your_SFX_name[][CBTFX_LENGTH] = {
 (1) - Frame length: How long a frame should repeat for.
 (2) - Channel 2 (Pulse) panning: Where the pulse channel should play, use the PAN_CENTER, PAN_LEFT and PAN_RIGHT macros.
 (3) - Channel 2 (Pulse) volume: Should be between 0x00 (No sound) and 0x0f (Full volume).
-(4) - Channel 2 (Pulse) Wave Duty: Thw width of channel 2's square wave, 0 (%12.5), 1 (%25), 2 (%50) or 3 (%75).
+(4) - Channel 2 (Pulse) wave duty: The width of channel 2's square wave, 0 (%12.5), 1 (%25), 2 (%50) or 3 (%75).
 (5) - Channel 2 (Pulse) note: the note that will play in the pulse channel, CBTFX has macros for each note ranging from FX_C_0 to FX_B_5.
 (6) - Channel 4 (Noise) panning: same as (2) but for the noise channel.
 (7) - Channel 4 (Noise) volume: same as (3) but for the noise channel.
