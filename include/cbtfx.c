@@ -19,7 +19,7 @@ uint8_t CBTFX_panning = 0;
 void CBTFX_init(const unsigned char * SFX, uint8_t length){
     CBTFX_pointer = SFX;
     CBTFX_size = length + 1;
-    CBTFX_repeater = *SFX;
+    CBTFX_repeater = 0;
     CBTFX_panning = NR51_REG;
 }
 
@@ -34,21 +34,12 @@ void CBTFX_update(void){
 
         	CBTFX_repeater = *CBTFX_pointer++;
 
-            // Clear CH2 and CH4's stereo settings
-            NR51_REG &= ~(0b10101010);
-
-            // Load the value into the sound registers and bump the pointer each time
-
-            //set the CH2 panning by shifting the number once
-            NR51_REG |= (*CBTFX_pointer++ << 1);
+            NR51_REG = (NR51_REG & 0b10101010) | *CBTFX_pointer++;
 
             NR21_REG = *CBTFX_pointer++;
             NR22_REG = *CBTFX_pointer++;
             NR23_REG = *CBTFX_pointer++;
             NR24_REG = *CBTFX_pointer++;
-
-            //set the CH4 panning by shifting the number three times
-            NR51_REG |= (*CBTFX_pointer++ << 3);
 
             NR41_REG = *CBTFX_pointer++;
             NR42_REG = *CBTFX_pointer++;

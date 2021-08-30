@@ -8,9 +8,20 @@ void CBTFX_init(const unsigned char * SFX, UINT8 length);
 #define PAN_RIGHT 0x01
 #define PAN_CENTER 0x11
 
-#define CBTFX_LENGTH 11
+#define CBTFX_LENGTH 10
 #define ARRAY_LEN(A) (sizeof(A) / sizeof(A[0]))
-#define CBTFX_FRAME(DT, CH2P ,CH2V, CH2D, CH2N, CH4P , CH4V, CH4F) {DT - 1, CH2P, 4 * CH2D << 4, CH2V << 4, CH2N, CH2N >> 8 | 0x80, CH4P, 0x2a, CH4V << 4, CH4F, 0x80}
+#define CBTFX_FRAME(DT, CH2P ,CH2V, CH2D, CH2N, CH4P , CH4V, CH4F) {\
+(unsigned char)((DT) - 1),\
+((unsigned char)(CH2P) << 1) | ((unsigned char)(CH4P) << 3),\
+(unsigned char)(((CH2D) << 2) << 4),\
+(unsigned char)((CH2V) << 4),\
+(unsigned char)(CH2N),\
+(unsigned char)(((CH2N) >> 8) | 0x80U),\
+0x2aU,\
+(unsigned char)((CH4V) << 4),\
+(unsigned char)(CH4F),\
+0x80U\
+}
 
 /*Source: http://devrs.com/gb/files/sndtab.html*/
 
