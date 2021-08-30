@@ -10,10 +10,6 @@ Also thanks to bbbbbr for getting my code to ACTUALLY work
 
 */
 #include <gb/gb.h>
-#include <stdio.h>
-#include <stdint.h>
-#include <stddef.h>
-
 const uint8_t * CBTFX_pointer;
 uint8_t CBTFX_size = 0;
 uint8_t CBTFX_repeater = 0;

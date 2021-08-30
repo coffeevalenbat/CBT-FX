@@ -1,7 +1,6 @@
 #include <gb/gb.h>
 #include <stdio.h>
 #include <gb/console.h>
-#include <stdint.h>
 #include <stddef.h>
 #include "../include/cbtfx.h"
 int joypad_p();
@@ -232,8 +231,8 @@ int joypad_p(){
 void update_screen(){
 	cls();
 	gotoxy(0, 0);
-    printf(" \n ");
-	printf("CBTF-FX DEMO CART");
+    printf(" \n  ");
+	printf("CBT-FX DEMO CART");
 
 	printf("\n\n\n\n\n\n       SFX_%hx", menu_counter);
 
@@ -250,7 +249,7 @@ void main(void){
 	update_screen();
 
 	while(1){
-
+		
 		uint8_t controller = joypad_p();
 
 		switch(controller){
