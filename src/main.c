@@ -255,6 +255,10 @@ void main(void){
     NR52_REG = 0x80;
     NR51_REG = 0xFF;
     NR50_REG = 0x77;
+    
+    __critical {
+        add_VBL(CBTFX_update);
+    }
 
 	update_screen();
 
@@ -292,8 +296,7 @@ void main(void){
 			break;
 
 		}
-
-		CBTFX_update();
+		
 		wait_vbl_done();
 	}
 }
