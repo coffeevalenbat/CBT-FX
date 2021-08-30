@@ -34,7 +34,7 @@ void CBTFX_update(void){
 
         	CBTFX_repeater = *CBTFX_pointer++;
 
-            NR51_REG = (NR51_REG & 0b10101010) | *CBTFX_pointer++;
+            NR51_REG = (NR51_REG & ~0b10101010) | *CBTFX_pointer++;
 
             NR21_REG = *CBTFX_pointer++;
             NR22_REG = *CBTFX_pointer++;
