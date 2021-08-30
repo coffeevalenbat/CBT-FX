@@ -11,6 +11,7 @@ uint8_t joypad_current_frame = 0;
 // SFX data
 // These are (painfully) converted SFX from FX Hammer, note that FX Hammer's pan values are inverted in the editor
 
+// Whip-like sound
 const unsigned char SFX_00[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(02, PAN_CENTER, 0x0f, 0, FX_Gs2, PAN_CENTER, 0x0f, 0x50),
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 1, FX_Fs2, PAN_CENTER, 0x08, 0x30),
@@ -28,6 +29,7 @@ const unsigned char SFX_00[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(02, PAN_LEFT, 0x01, 2, FX_A_1, PAN_CENTER, 0x00, 0x00)
 };
 
+// Jump/Whoop sound
 const unsigned char SFX_01[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 2, FX_E_1, PAN_CENTER, 0x00, 0x00),
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 2, FX_Gs1, PAN_CENTER, 0x00, 0x00),
@@ -45,6 +47,7 @@ const unsigned char SFX_01[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(01, PAN_RIGHT, 0x01, 2, FX_E_3, PAN_CENTER, 0x00, 0x00)
 };
 
+// Start/Pause-like sound
 const unsigned char SFX_02[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 1, FX_C_5, PAN_CENTER, 0x08, 0x50),
 	CBTFX_FRAME(03, PAN_CENTER, 0x0f, 2, FX_C_4, PAN_CENTER, 0x03, 0x30),
@@ -60,6 +63,7 @@ const unsigned char SFX_02[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(02, PAN_LEFT, 0x02, 0, FX_E_4, PAN_CENTER, 0x00, 0x00)
 };
 
+// Start/Pause-like sound... Again
 const unsigned char SFX_03[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 0, FX_E_5, PAN_CENTER, 0x00, 0x00),
 	CBTFX_FRAME(03, PAN_CENTER, 0x0f, 2, FX_E_4, PAN_CENTER, 0x00, 0x00),
@@ -87,6 +91,7 @@ const unsigned char SFX_03[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(03, PAN_LEFT, 0x01, 2, FX_Gs4, PAN_CENTER, 0x00, 0x00)
 };
 
+// Button pressed sound
 const unsigned char SFX_04[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 2, FX_C_3, PAN_CENTER, 0x08, 0x50),
 	CBTFX_FRAME(02, PAN_CENTER, 0x0f, 2, FX_C_2, PAN_CENTER, 0x03, 0x30),
@@ -102,6 +107,7 @@ const unsigned char SFX_04[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(02, PAN_LEFT, 0x01, 2, FX_E_2, PAN_RIGHT, 0x00, 0x00)
 };
 
+// Explosion-like sound
 const unsigned char SFX_05[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 2, FX_E_1, PAN_CENTER, 0x0f, 0x50),
 	CBTFX_FRAME(03, PAN_CENTER, 0x0f, 2, FX_C_1, PAN_CENTER, 0x0f, 0x80),
@@ -120,6 +126,7 @@ const unsigned char SFX_05[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(07, PAN_CENTER, 0x00, 0, FX_C_0, PAN_CENTER, 0x01, 0x20)
 };
 
+// Another jump-like sound
 const unsigned char SFX_06[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 2, FX_Gs2, PAN_CENTER, 0x0f, 0x50),
 	CBTFX_FRAME(01, PAN_CENTER, 0x0f, 2, FX_E_2, PAN_CENTER, 0x08, 0x80),
@@ -143,6 +150,7 @@ const unsigned char SFX_06[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(01, PAN_LEFT, 0x01, 2, FX_E_3, PAN_CENTER, 0x00, 0x00)
 };
 
+// Mysterious sound
 const unsigned char SFX_07[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(02, PAN_CENTER, 0x0f, 2, FX_E_1, PAN_CENTER, 0x00, 0x00),
 	CBTFX_FRAME(02, PAN_CENTER, 0x0f, 1, FX_E_1, PAN_CENTER, 0x00, 0x00),
@@ -177,6 +185,7 @@ const unsigned char SFX_07[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(04, PAN_CENTER, 0x01, 1, FX_C_4, PAN_CENTER, 0x00, 0x00)
 };
 
+// Sword whip sound
 const unsigned char SFX_08[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(02, PAN_CENTER, 0x00, 0, FX_C_0, PAN_CENTER, 0x0f, 0x40),
 	CBTFX_FRAME(02, PAN_CENTER, 0x00, 0, FX_C_0, PAN_CENTER, 0x0f, 0x50),
@@ -200,6 +209,7 @@ const unsigned char SFX_08[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(02, PAN_CENTER, 0x00, 0, FX_C_0, PAN_RIGHT, 0x02, 0x80)
 };
 
+// Fart
 const unsigned char SFX_09[][CBTFX_LENGTH] = {
 	CBTFX_FRAME(03, PAN_CENTER, 0x0f, 0, FX_D_1, PAN_CENTER, 0x0f, 0x80),
 	CBTFX_FRAME(03, PAN_CENTER, 0x0f, 2, FX_Cs0, PAN_CENTER, 0x06, 0x40),
