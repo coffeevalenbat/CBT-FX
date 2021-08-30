@@ -1,5 +1,6 @@
+
 # CBT-FX: It just works
-This is my attempt at writing a sound effect driver that's natively compatible with [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020/) (Instead of having to use register values or converting other assembly drivers to GBDK-2020), It's made to be used alongside the [FX Hammer editor](https://www.pouet.net/prod.php?which=17337). It's aimed at people who want good sounding sound effects but don't wanna have to do custom solutions, feel free to use the translated example SFX's too.
+This is my attempt at writing a sound effect driver that's natively compatible with [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020/) (Instead of having to use register values or converting other assembly drivers to GBDK-2020), It's made to be used alongside the [FX Hammer editor](https://www.pouet.net/prod.php?which=17337). It's aimed at people who want good sounding sound effects but don't wanna have to do custom solutions, feel free to use the translated example SFX's too (see [here](https://github.com/datguywitha3ds/CBT-FX/blob/26282e0e63d0cdbda31acf8a2430c4651243244e/src/main.c#L15)).
 
 # Usage
 1. Create your sound effects first in first in the before mentioned [FX Hammer editor](https://www.pouet.net/prod.php?which=17337).
@@ -34,7 +35,7 @@ const unsigned char your_SFX_name[][CBTFX_LENGTH] = {
 This repository comes with an example project and all the sound effects from FX Hammer converted (See `src`).
 
 # For music driver users
-If you're already using a driver for music such as [hUGEdriver](https://github.com/SuperDisk/hUGEDriver), [GBT Player](https://github.com/AntonioND/gbt-player/tree/master/legacy_gbdk) or any other, you will need to add a few lines of code to the tracker functions to make it play ball with this.
+If you're already using a driver for music such as [hUGEdriver](https://github.com/SuperDisk/hUGEDriver), [GBT Player](https://github.com/AntonioND/gbt-player/tree/master/legacy_gbdk) or any other, you will need to add a few lines of code to the CBTFX functions to make it play ball with this.
 ```c
 void CBTFX_init(const unsigned char * SFX, uint8_t length){
     CBTFX_pointer = SFX;
