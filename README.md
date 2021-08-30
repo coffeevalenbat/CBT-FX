@@ -1,6 +1,6 @@
 
 # CBT-FX: It just works
-This is my attempt at writing a sound effect driver that's natively compatible with [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020/) (Instead of having to use register values or converting other assembly drivers to GBDK-2020), It's made to be used alongside the [FX Hammer editor](https://www.pouet.net/prod.php?which=17337). It's aimed at people who want good sounding sound effects but don't wanna have to do custom solutions, feel free to use the translated example SFX's too (see [here](https://github.com/datguywitha3ds/CBT-FX/blob/26282e0e63d0cdbda31acf8a2430c4651243244e/src/main.c#L15)).
+This is my attempt at writing a sound effect driver that's natively compatible with [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020/) (Instead of having to use register values or converting other assembly drivers to GBDK-2020), It's made to be used alongside the [FX Hammer editor](https://www.pouet.net/prod.php?which=17337). It's aimed at people who want good sounding sound effects but don't wanna have to do custom solutions, feel free to use the translated example SFX's too (see [here](https://github.com/datguywitha3ds/CBT-FX/blob/main/src/main.c#L15)).
 
 # Usage
 1. Create your sound effects first in the before mentioned [FX Hammer editor](https://www.pouet.net/prod.php?which=17337).
