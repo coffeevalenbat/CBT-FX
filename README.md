@@ -12,21 +12,22 @@ This is my attempt at writing a sound effect driver that's natively compatible w
 
 const unsigned char your_SFX_name[][CBTFX_LENGTH] = { 
 /*
-               (1)     (2)       (3)    (4)        (5)     (6)   (7)
-                |       |         |      |          |       |     | */
-    CBTFX_FRAME(05, PAN_CENTER, 0x0f, FX_C_3, PAN_CENTER, 0x00, 0x00),
-    CBTFX_FRAME(02, PAN_CENTER, 0x0b, FX_C_3, PAN_CENTER, 0x00, 0x00),
-    CBTFX_FRAME(02, PAN_CENTER, 0x04, FX_C_3, PAN_CENTER, 0x00, 0x00),
-    CBTFX_FRAME(01, PAN_CENTER, 0x02, FX_C_3, PAN_CENTER, 0x00, 0x00)
+               (1)     (2)       (3) (4) (5)        (6)     (7)   (8)
+                |       |         |   |   |          |       |     | */
+    CBTFX_FRAME(05, PAN_CENTER, 0x0f, 2, FX_C_3, PAN_CENTER, 0x00, 0x00),
+    CBTFX_FRAME(02, PAN_CENTER, 0x0b, 2, FX_C_3, PAN_CENTER, 0x00, 0x00),
+    CBTFX_FRAME(02, PAN_CENTER, 0x04, 2, FX_C_3, PAN_CENTER, 0x00, 0x00),
+    CBTFX_FRAME(01, PAN_CENTER, 0x02, 2, FX_C_3, PAN_CENTER, 0x00, 0x00)
 };
 /*
 (1) - Frame length: How long a frame should repeat for.
 (2) - Channel 2 (Pulse) panning: Where the pulse channel should play, use the PAN_CENTER, PAN_LEFT and PAN_RIGHT macros.
 (3) - Channel 2 (Pulse) volume: Should be between 0x00 (No sound) and 0x0f (Full volume).
-(4) - Channel 2 (Pulse) note: the note that will play in the pulse channel, CBTFX has macros for each note ranging from FX_C_0 to FX_B_5.
-(5) - Channel 4 (Noise) panning: same as (2) but for the noise channel.
-(6) - Channel 4 (Noise) volume: same as (3) but for the noise channel.
-(7) - Channel 4 (Noise) frequency: the frequency (in hex) that will play in the noise channel.
+(4) - Channel 2 (Pulse) Wave Duty: Thw width of channel 2's square wave, 0 (%12.5), 1 (%25), 2 (%50) or 3 (%75).
+(5) - Channel 2 (Pulse) note: the note that will play in the pulse channel, CBTFX has macros for each note ranging from FX_C_0 to FX_B_5.
+(6) - Channel 4 (Noise) panning: same as (2) but for the noise channel.
+(7) - Channel 4 (Noise) volume: same as (3) but for the noise channel.
+(8) - Channel 4 (Noise) frequency: the frequency (in hex) that will play in the noise channel.
 */
 ```
 5. Add a call to `CBTFX_update` in your main loop so it gets called every frame, or add it as a VBL interrupt.
