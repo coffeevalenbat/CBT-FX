@@ -1,8 +1,10 @@
 #ifndef CBTFX_H_INCLUDE
 #define CBTFX_H_INCLUDE
 
+#include <gb/gb.h>
+
 void CBTFX_update(void);
-void CBTFX_init(const unsigned char * SFX, UINT8 length);
+void CBTFX_init(const unsigned char * SFX, uint8_t length);
 
 #define PAN_LEFT 0x10
 #define PAN_RIGHT 0x01
