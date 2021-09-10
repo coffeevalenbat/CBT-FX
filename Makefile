@@ -24,7 +24,7 @@ BINS	    = $(OBJDIR)/$(PROJECTNAME).gb
 CSOURCES    = $(foreach dir,$(SRCDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(INCDIR),$(notdir $(wildcard $(dir)/*.c))) $(foreach dir,$(SFXDIR),$(notdir $(wildcard $(dir)/*.c)))
 OBJS       	= $(CSOURCES:%.c=$(OBJDIR)/%.o) $(ASMSOURCES:%.s=$(OBJDIR)/%.o)
 
-all:	prepare hammer2cbt $(BINS)
+all:	prepare $(BINS)
 
 rebuild:
 	make clean

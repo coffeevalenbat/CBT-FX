@@ -43,7 +43,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input", help = "Input FX Hammer .sav file", type = str)
 parser.add_argument("-o", "--output", help = "Output folder for .c/.h files", type = str)
 parser.add_argument("-b", "--bank", help = "Optional bank number", type = int)
-parser.add_argument("-dp", "--dpath", help = "Optional path to CBT-FX (F.E '-dp include/cbtfx.h')", type = str)
+parser.add_argument("-dp", "--dpath", help = "Optional path to CBT-FX (F.E '-dp include/cbtfx.h', default is 'cbtfx.h')", type = str)
 parser.add_argument("-na", "--name", help = "Optional effect name (Default is 'SFX_' Followed by the effect number)", type = str)
 parser.add_argument("-nu", "--number", help = "Effect number to export", type = int)
 parser.add_argument("-lr", "--invert", help = "Invert FX Hammer pan values (Editor is inverted)")
@@ -60,7 +60,7 @@ FXHammer_sfx = 0
 if args.number:
 	FXHammer_sfx = args.number
 
-buffer_name = "SFX_" + str(FXHammer_sfx).zfill(2)
+buffer_name = "SFX_" + (("{0:X}").format(FXHammer_sfx)).zfill(2)
 if args.name:
 	buffer_name = args.name
 
@@ -92,8 +92,6 @@ for x in range(32):
 	buffer_length += 1
 FXHammer_file.close()
 
-# Generate the fcuing c file
-
 C_file_out = open(output_folder + buffer_name + ".c", "w")
 if buffer_bank > 0:
 	C_file_out.write("#pragma bank " + str(buffer_bank) + "\n")
@@ -113,7 +111,6 @@ for x in range(0, 32):
 C_file_out.write("\n};")
 C_file_out.close()
 
-# Generate H file
 H_file_out = open(output_folder + buffer_name + ".h", "w")
 
 H_file_out.write(update_c_header(buffer_name, buffer_length, buffer_bank))
