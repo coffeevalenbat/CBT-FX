@@ -19,7 +19,7 @@ optional arguments:
                         Output folder for .c/.h files
   -b BANK, --bank BANK  Optional bank number
   -dp DPATH, --dpath DPATH
-                        Optional path to CBT-FX (F.E '-dp include/cbtfx.h')
+                        Optional path to CBT-FX (F.E '-dp include/cbtfx.h', default is 'cbtfx.h')
   -na NAME, --name NAME
                         Optional effect name (Default is 'SFX_' Followed by
                         the effect number)
@@ -32,33 +32,21 @@ example:
 ```
  5. Include the generated .h files into your desired .c files.
  6. Add a call to `CBTFX_update` in your main loop so it gets called every frame, or add it as a VBL interrupt (Recommended to avoid stutter).
- 7. When you need to play a sound effect, call `CBTFX_init(&your_SFX_name[0][0], your_SFX_name_Length)`.
+ 7. When you need to play a sound effect, call `CBTFX_init(&your_SFX_name[0][0], your_SFX_name_Length)` (There's also a macro generated called `CBTFX_PLAY_your_SFX_name` that should do the same thing.).
 
 This repository comes with an example project and all the sound effects from FX Hammer converted (See `src`).
 
 # For music driver users
 If you're already using a driver for music such as [hUGEdriver](https://github.com/SuperDisk/hUGEDriver), [GBT Player](https://github.com/AntonioND/gbt-player/tree/master/legacy_gbdk) or any other, you will need to add a few lines of code to the CBTFX functions to make it play ball with this.
+There's 2 macros in `cbtfx.c` that should be set to your music driver's mute functions, the before mentioned drivers have a single function that toggles channels, in that case you should set them like: 
 ```c
-void CBTFX_init(const unsigned char * SFX, uint8_t length){
-    CBTFX_pointer = SFX;
-    CBTFX_size = length + 1;
-    CBTFX_repeater = *SFX;
-    CBTFX_panning = NR51_REG;
-    //If your driver has any "Mute channel" functions, add two of them here for channel 2 and 4, something like:
-    my_music_driver_mute(channel_2);
-    my_music_driver_mute(channel_4);
-}
+// For hUGEdriver
+#define MUSIC_DRIVER_TOGGLE_CH2 hUGE_mute_channel(HT_CH2);
+#define MUSIC_DRIVER_TOGGLE_CH4 hUGE_mute_channel(HT_CH2);
 
-
-
-//From cbtfx.c line 66
-if(CBTFX_size == 0){
-    NR21_REG = NR22_REG = NR23_REG = NR24_REG = NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
-    NR51_REG |= 0b10101010;
-    // If your driver has any "UNmute channel" functions, add two of them for channel 2 and 4.
-    my_music_driver_UNmute(channel_2);
-    my_music_driver_UNmute(channel_4);
-}
+// For GBT Player
+#define MUSIC_DRIVER_TOGGLE_CH2 gbt_enable_channels(GBT_CHAN_2);
+#define MUSIC_DRIVER_TOGGLE_CH4 gbt_enable_channels(GBT_CHAN_4);
 ```
 
 ALSO remember to update CBTFX **after** your music driver, to avoid the music driver going over the sound effects.
@@ -69,5 +57,4 @@ ALSO remember to update CBTFX **after** your music driver, to avoid the music dr
 - SFX's are 1:1 to FX Hammer's playback.
 # Cons
 - Sound effects tend to be a little on the chunky side, if you're working on a big game, I'd recommend keeping the sound effects in a different bank and add some bank switching lines in the CBTFX functions.
-- Lacks any of FX Hammer's special features (priority system for example).
 - Only one sfx at a time.

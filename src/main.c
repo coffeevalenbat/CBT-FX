@@ -21,6 +21,8 @@ uint8_t joypad_current_frame = 0;
 
 const unsigned char * SFX_list[] = { &SFX_00[0][0], &SFX_01[0][0], &SFX_02[0][0], &SFX_03[0][0], &SFX_04[0][0], &SFX_05[0][0], &SFX_06[0][0], &SFX_07[0][0], &SFX_08[0][0], &SFX_09[0][0] };
 const unsigned char SFX_length[] = {SFX_00_Length, SFX_01_Length, SFX_02_Length, SFX_03_Length, SFX_04_Length, SFX_05_Length, SFX_06_Length, SFX_07_Length, SFX_08_Length, SFX_09_Length};
+const unsigned char SFX_priority[] = {SFX_00_Priority, SFX_01_Priority, SFX_02_Priority, SFX_03_Priority, SFX_04_Priority, SFX_05_Priority, SFX_06_Priority, SFX_07_Priority, SFX_08_Priority, SFX_09_Priority};
+const unsigned char SFX_ch_used[] = {SFX_00_CH_Used, SFX_01_CH_Used, SFX_02_CH_Used, SFX_03_CH_Used, SFX_04_CH_Used, SFX_05_CH_Used, SFX_06_CH_Used, SFX_07_CH_Used, SFX_08_CH_Used, SFX_09_CH_Used};
 
 int joypad_p(){
     joypad_last_frame = joypad_current_frame;
@@ -59,7 +61,7 @@ void main(void){
 		switch(controller){
 
 			case J_A:
-				CBTFX_init(SFX_list[menu_counter], SFX_length[menu_counter]);
+				CBTFX_init(SFX_list[menu_counter], SFX_length[menu_counter], SFX_priority[menu_counter], SFX_ch_used[menu_counter]);
 				break;
 
 			case J_LEFT:
