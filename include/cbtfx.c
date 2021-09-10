@@ -15,7 +15,7 @@ Also thanks to bbbbbr for getting my code to ACTUALLY work
 #define MUSIC_DRIVER_TOGGLE_CH2
 #define MUSIC_DRIVER_TOGGLE_CH4
 
-unsigned char CBTFX_HEADER[] = "CBT-FX BY COFFEEBAT 2021";
+const unsigned char CBTFX_HEADER[] = "CBT-FX BY COFFEEBAT 2021";
 const uint8_t * CBTFX_pointer;
 uint8_t CBTFX_size = 0;
 uint8_t CBTFX_repeater = 0;
