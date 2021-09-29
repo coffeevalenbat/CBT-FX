@@ -38,15 +38,19 @@ This repository comes with an example project and all the sound effects from FX 
 
 # For music driver users
 If you're already using a driver for music such as [hUGEdriver](https://github.com/SuperDisk/hUGEDriver), [GBT Player](https://github.com/AntonioND/gbt-player/tree/master/legacy_gbdk) or any other, you will need to add a few lines of code to the CBTFX functions to make it play ball with this.
-There's 2 macros in `cbtfx.c` that should be set to your music driver's mute functions, the before mentioned drivers have a single function that toggles channels, in that case you should set them like: 
+There's 4 macros in `cbtfx.c` that should be set to your music driver's mute functions, the before mentioned drivers have a single function that toggles channels, in that case you should set them like: 
 ```c
 // For hUGEdriver
-#define MUSIC_DRIVER_TOGGLE_CH2 hUGE_mute_channel(HT_CH2);
-#define MUSIC_DRIVER_TOGGLE_CH4 hUGE_mute_channel(HT_CH2);
+#define MUSIC_DRIVER_CH2_ON hUGE_mute_channel(HT_CH2, 0);
+#define MUSIC_DRIVER_CH2_OFF hUGE_mute_channel(HT_CH2, 1);
+#define MUSIC_DRIVER_CH4_ON hUGE_mute_channel(HT_CH4, 0);
+#define MUSIC_DRIVER_CH4_OFF hUGE_mute_channel(HT_CH4, 1);
 
 // For GBT Player
-#define MUSIC_DRIVER_TOGGLE_CH2 gbt_enable_channels(GBT_CHAN_2);
-#define MUSIC_DRIVER_TOGGLE_CH4 gbt_enable_channels(GBT_CHAN_4);
+#define MUSIC_DRIVER_CH2_ON gbt_enable_channels(GBT_CHAN_2);
+#define MUSIC_DRIVER_CH2_OFF gbt_enable_channels(GBT_CHAN_2);
+#define MUSIC_DRIVER_CH4_ON gbt_enable_channels(GBT_CHAN_4);
+#define MUSIC_DRIVER_CH4_OFF gbt_enable_channels(GBT_CHAN_4);
 ```
 
 ALSO remember to update CBTFX **after** your music driver, to avoid the music driver going over the sound effects.

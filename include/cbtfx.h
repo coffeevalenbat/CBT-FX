@@ -5,7 +5,7 @@
 
 void CBTFX_update(void);
 void CBTFX_init(const unsigned char * SFX, uint8_t length, uint8_t priority, uint8_t ch_used);
-void CBTFX_ch_mask_setup();
+void CBTFX_ch_mask_setup(UBYTE toggle);
 
 #define PAN_LEFT 0x10
 #define PAN_RIGHT 0x01

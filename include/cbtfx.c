@@ -11,9 +11,12 @@ Also thanks to bbbbbr for getting my code to ACTUALLY work
 */
 #include <gb/gb.h>
 #include "cbtfx.h"
+
 // Don't forget to include your music driver here if you're gonna use it!
-#define MUSIC_DRIVER_TOGGLE_CH2
-#define MUSIC_DRIVER_TOGGLE_CH4
+#define MUSIC_DRIVER_CH2_ON
+#define MUSIC_DRIVER_CH2_OFF
+#define MUSIC_DRIVER_CH4_ON
+#define MUSIC_DRIVER_CH4_OFF
 
 const unsigned char CBTFX_HEADER[] = "CBT-FX BY COFFEEBAT 2021";
 const uint8_t * CBTFX_pointer;
@@ -33,23 +36,26 @@ void CBTFX_init(const unsigned char * SFX, uint8_t length, uint8_t priority, uin
     CBTFX_size = length;
     CBTFX_repeater = 0;
     CBTFX_panning = NR51_REG;
-    CBTFX_ch_mask_setup();
+    CBTFX_ch_mask_setup(0);
 }
 
-void CBTFX_ch_mask_setup(){
+void CBTFX_ch_mask_setup(UBYTE toggle){
     switch(CBTFX_ch_used){
         case 0xF0:
             CBTFX_ch_mask = 0b11011101;
-            MUSIC_DRIVER_TOGGLE_CH2
+            MUSIC_DRIVER_CH2_ON
+            if (toggle){ MUSIC_DRIVER_CH2_OFF; }
             break;
         case 0x0F:
             CBTFX_ch_mask = 0b01110111;
-            MUSIC_DRIVER_TOGGLE_CH4
+            MUSIC_DRIVER_CH4_ON
+            if (toggle){ MUSIC_DRIVER_CH4_OFF; }
             break;
         default:
             CBTFX_ch_mask = 0b01010101;
-            MUSIC_DRIVER_TOGGLE_CH4
-            MUSIC_DRIVER_TOGGLE_CH2
+            MUSIC_DRIVER_CH2_ON
+            MUSIC_DRIVER_CH4_ON
+            if (toggle){ MUSIC_DRIVER_CH2_OFF; MUSIC_DRIVER_CH4_OFF; }
             break;
     }
 }
@@ -95,7 +101,7 @@ void CBTFX_update(void){
             if(CBTFX_size == 0){
            		CBTFX_priority = NR21_REG = NR22_REG = NR23_REG = NR24_REG = NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
                 NR51_REG |= 0b10101010;
-                CBTFX_ch_mask_setup();
+                CBTFX_ch_mask_setup(1);
             }
 
         }
