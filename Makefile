@@ -11,7 +11,7 @@ LCC = $(GBDK_HOME)bin/lcc
 
 # You can set flags for LCC here
 # For example, you can uncomment the line below to turn on debug output
-# LCCFLAGS = -debug
+LCCFLAGS = -Wl-lhUGEDriver.lib
 
 # You can set the name of the .gb ROM file here
 PROJECTNAME    = CBTFX_DEMO
@@ -28,13 +28,11 @@ all:	prepare $(BINS)
 
 rebuild:
 	make clean
+	make hammer
 	make
 
-run:
-	sameboy $(BINS)
-
-hammer2cbt:
-	$(foreach var,0 1 2 3 4 5 6 7 8 9, python3 hammer2cbt.py -i fxbank.sav -o $(SFXDIR) -dp ../cbtfx.h -nu $(var);)
+hammer:
+	python3 hammer2cbt.py --fxammo 10 hammered.sav 0 include/sfx/
 
 make.bat: Makefile
 	@echo "REM Automatically generated from Makefile" > make.bat
@@ -60,8 +58,7 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 # Link the compiled object files into a .gb ROM file
 $(BINS):	$(OBJS)
 	$(LCC) -Wm-yn$(PROJECTNAME) $(LCCFLAGS) -o $(BINS) $(OBJS)
-	make run
-
+	
 prepare:
 	mkdir -p $(OBJDIR)
 
