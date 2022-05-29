@@ -1,6 +1,6 @@
 #include <gb/gb.h>
 #include <stdio.h>
-#include <gb/console.h>
+#include <gbdk/console.h>
 #include <stddef.h>
 #include "../include/cbtfx.h"
 #include "../include/hUGEDriver.h"

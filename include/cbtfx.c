@@ -16,6 +16,8 @@ Also thanks to bbbbbr for getting my code to ACTUALLY work
 #define MUSIC_DRIVER_CH2_OFF hUGE_mute_channel(HT_CH2, 1);
 #define MUSIC_DRIVER_CH4_ON hUGE_mute_channel(HT_CH4, 0);
 #define MUSIC_DRIVER_CH4_OFF hUGE_mute_channel(HT_CH4, 1);
+// 0 = Panning won't be reset after an SFX, 1 = Panning will be set to 0XFF after an SFX plays.
+#define MONO_MUSIC 0
 
 const unsigned char CBTFX_HEADER[] = "CBT-FX BY COFFEEBAT 2021-2022";
 const uint8_t * CBTFX_pointer;
@@ -31,6 +33,9 @@ void CBTFX_init(const unsigned char * SFX) NONBANKED {
     // To avoid hanging notes
     if (CBTFX_ch_used & 128) NR21_REG = NR22_REG = NR23_REG = NR24_REG = 0;
     if (CBTFX_ch_used & 32) NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
+    // To avoid the priority system leaving some channels turned off (Don't ask how I discovered this...)
+    MUSIC_DRIVER_CH2_ON;
+    MUSIC_DRIVER_CH4_ON;
     CBTFX_priority = *SFX & 0x0f;
     CBTFX_ch_used = *SFX++;
     CBTFX_size = *SFX++;
@@ -48,12 +53,12 @@ void CBTFX_update(void) NONBANKED {
     	}else{
 
         	CBTFX_repeater = *CBTFX_pointer++; // Load the frame's length
-
-            uint8_t mask = 0; // Mask to avoid muting an unused channel
-            if (CBTFX_ch_used & 128) mask |= 0x22;
-            if (CBTFX_ch_used & 32) mask |= 0x88;
-            NR51_REG &= ~mask; // Mask out the CH2 and CH4 pan values
-            NR51_REG |= mask & *CBTFX_pointer++; // And write ours
+			
+	        uint8_t mask = 0; // Mask to avoid muting an unused channel
+	        if (CBTFX_ch_used & 128) mask |= 0x22;
+	        if (CBTFX_ch_used & 32) mask |= 0x88;
+	        NR51_REG &= ~mask; // Mask out the CH2 and CH4 pan values
+	        NR51_REG |= mask & *CBTFX_pointer++; // And write ours
             
             if (CBTFX_ch_used & 128){
                 NR21_REG = *CBTFX_pointer++;
@@ -90,6 +95,9 @@ void CBTFX_update(void) NONBANKED {
                     MUSIC_DRIVER_CH4_ON;
                     NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
                 }
+                #if (MONO_MUSIC==1)  
+					NR51_REG = 0xff;
+				#endif
             }
 
         }

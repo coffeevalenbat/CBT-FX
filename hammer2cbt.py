@@ -33,13 +33,19 @@ parser.add_argument("fxsav", help="FX Hammer .sav file (Normally called 'hammere
 parser.add_argument("fxnum", help="Index of the desired SFX to export.")
 parser.add_argument("out", help="Folder where .c and .h files will be saved.")
 parser.add_argument("--fxammo", help="Number of SFX to export (starts at fxnum, ends at fxnum + fxammo)")
-parser.add_argument("--fxinv", help="invert pan values for SFX (FX Hammer has them inverted by default, without this flag, the panning will be corrected)", action="store_true")
+parser.add_argument("--fxnamelist", help="Text file with all the names for the SFX, each on one line (The 'SFX_' Prefix is added at the start).")
+parser.add_argument("--fxinv", help="Invert pan values for SFX (FX Hammer has them inverted by default, without this flag, the panning will be corrected)", action="store_true")
 
 args = parser.parse_args()
 
 fxsav = open(args.fxsav,"rb")
 
 loop = 1
+
+size_count = 0
+
+if args.fxnamelist:
+	fxnamelist = open(args.fxnamelist,"r")
 if args.fxammo:
 	loop = int(args.fxammo)
 for n in range(int(args.fxnum), int(args.fxnum) + loop):
@@ -134,6 +140,8 @@ for n in range(int(args.fxnum), int(args.fxnum) + loop):
 			bufadd(temp_buf[7])
 
 	filename = "SFX_" + (("{0:X}").format(fxnum)).zfill(2)
+	if args.fxnamelist:
+		filename = "SFX_" + fxnamelist.readline().replace("\n",'')
 
 	def c_header():
 		return """/*
@@ -174,4 +182,13 @@ for n in range(int(args.fxnum), int(args.fxnum) + loop):
 	Hfile.close()
 
 	print(filename + ".c" + " succesfully written.")
-	print(filename + " Size: " + str(len(fxh_buf) + 2) + " bytes.")
+	print(filename + " Size: " + str(len(fxh_buf) + 2) + " bytes.\n")
+
+	size_count += len(fxh_buf) + 2
+
+if args.fxammo:
+	print("Final size: " + str(size_count) + " bytes.\n")
+
+if args.fxnamelist:
+	fxnamelist.close()
+
