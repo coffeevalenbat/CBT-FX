@@ -31,7 +31,7 @@ The ROM should work on any Game Boy emulator or real hardware using a flash cart
 
 ![First thing](/img/first_thing.bmp)
 
-The first thing you'll see after you boot it up is this, this is the editor itself, it consists of 7 rows of differently labeled data, don't worry, we'll quickly go through them from left to right:
+The first thing you'll see after you boot it up is this, this is the editor itself, it consists of 7 columns of differently labeled data, don't worry, we'll quickly go through them from left to right:
 * Step number: Number of the current row, FX-Hammer has 32 rows per effect.
 * Step length: Number of frames that the current frame will last.
 * Channel 2 panning and volume: It consists of two parts, the letter to the left is the panning (L = Left panned, R = Right panned, M = Center panned), and the one to the right is the volume (0 = No sound, F = Full volume).
@@ -53,16 +53,16 @@ If the first thing you see after booting it up is something like this instead, *
 ## Controls
 
 Controls can be a bit obtuse but after a while you learn em:
-	- Move cursor: D-Pad
-	- Change current SFX: B + Up / B + Down (Increase, decrease).
-	- Edit value: A + Up / A  + Down (Increase, decrease).
-	- Edit panning: A + Left / A + Right (Pan left and right).
-	- Play SFX: Start.
-	- Play SFX + Follow step cursor: Start + Down.
-	- Play SFX at half speed: Start + Up.
-	- Save SFX to clipboard: Select + Up.
-	- Paste SFX from clipboard: Select + Start.
-	- Edit priority: B + Left / B + Right (Increase, decrease).
+* Move cursor: D-Pad
+* Change current SFX: B + Up / B + Down (Increase, decrease).
+* Edit value: A + Up / A  + Down (Increase, decrease).
+* Edit panning: A + Left / A + Right (Pan left and right).
+* Play SFX: Start.
+* Play SFX + Follow step cursor: Start + Down.
+* Play SFX at half speed: Start + Up.
+* Save SFX to clipboard: Select + Up.
+* Paste SFX from clipboard: Select + Start.
+* Edit priority: B + Left / B + Right (Increase, decrease).
 
 ## Priority system
 The priority value lets you manage which sounds play over each other, the higher the value, the higher it's priority is, meaning that while it's playing, SFX requests with lesser priority values will be ignored, effects with the same priority will be played normally, this is good if you say, don't want your beautifully crafted explosion effect to be ignored over a little shooting effect.
