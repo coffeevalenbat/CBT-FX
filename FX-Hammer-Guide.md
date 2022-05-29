@@ -30,6 +30,7 @@ The ROM should work on any Game Boy emulator or real hardware using a flash cart
 
 
 ![First thing](/img/first_thing.bmp)
+
 The first thing you'll see after you boot it up is this, this is the editor itself, it consists of 7 rows of differently labeled data, don't worry, we'll quickly go through them from left to right:
 * Step number: Number of the current row, FX-Hammer has 32 rows per effect.
 * Step length: Number of frames that the current frame will last.
@@ -46,6 +47,7 @@ You'll also see a few things on the bottom blue bar, most of these are labels fo
 The default save file comes with 10 effects already written, you can play around with them to get something you like or clear them to have more space.
 
 ![SaveBug](/img/save_bug.bmp)
+
 If the first thing you see after booting it up is something like this instead, **don't worry!** It probably just means you loaded the ROM without the save file included alongside the editor, meaning your emulator of choice made a blank one which is read as garbage data, just delete the .sav file your emulator created and replace it with the one that came with the editor.
 
 ## Controls

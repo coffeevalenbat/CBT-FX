@@ -3,7 +3,7 @@ This is my attempt at writing a sound effect driver that's natively compatible w
 
 If you've never used FX-Hammer, you can read my guide on using the editor [here](/FX-Hammer-Guide.md).
 
-[Check out the demo cart to get a taste of it!](/releases)
+[Check out the demo cart to get a taste of it!](https://github.com/datguywitha3ds/CBT-FX/releases)
 
   * [Usage](#usage)
   * [For music driver users](#for-music-driver-users)
