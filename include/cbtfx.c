@@ -29,7 +29,7 @@ uint8_t CBTFX_ch_used = 0;
 
 //Restart values and point to the new sfx
 void CBTFX_init(const unsigned char * SFX) NONBANKED {
-    if (*SFX & 0x0f < CBTFX_priority) return;
+    if ((*SFX & 0x0f) < CBTFX_priority) return;
     // To avoid hanging notes
     if (CBTFX_ch_used & 128) NR21_REG = NR22_REG = NR23_REG = NR24_REG = 0;
     if (CBTFX_ch_used & 32) NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
