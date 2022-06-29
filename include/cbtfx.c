@@ -87,12 +87,12 @@ void CBTFX_update(void) NONBANKED {
 
             if(CBTFX_size == 0){
            		CBTFX_priority = 0;
+                MUSIC_DRIVER_CH2_ON;
+                MUSIC_DRIVER_CH4_ON;
                 if (CBTFX_ch_used & 128){
-                    MUSIC_DRIVER_CH2_ON;
                     NR21_REG = NR22_REG = NR23_REG = NR24_REG = 0;
                 }
                 if (CBTFX_ch_used & 32){
-                    MUSIC_DRIVER_CH4_ON;
                     NR41_REG = NR42_REG = NR43_REG = NR44_REG = 0;
                 }
                 #if (MONO_MUSIC==1)  

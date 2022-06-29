@@ -52,20 +52,14 @@ optional arguments:
 This repository comes with an example project and all the sound effects from FX Hammer converted and an example on hUGEDriver integration (See `src`).
 
 ## For music driver users
-If you're already using a driver for music such as [hUGEdriver](https://github.com/SuperDisk/hUGEDriver), [GBT Player](https://github.com/AntonioND/gbt-player/tree/master/legacy_gbdk) or any other, you will need to add a few lines of code to the CBTFX functions to make it play ball with this.
-There's 4 macros in `cbtfx.c` that should be set to your music driver's mute functions, the before mentioned drivers have a single function that toggles channels, in that case you should set them like: 
+If you're already using a driver for music such as [hUGEdriver](https://github.com/SuperDisk/hUGEDriver), you will need to add a few lines of code to the CBTFX functions to make it play ball with this.
+There's 4 macros in `cbtfx.c` that should be set to the music driver's mute functions, the before mentioned drivers have a single function that toggles channels, in that case you should set them like: 
 ```c
 // For hUGEdriver
 #define MUSIC_DRIVER_CH2_ON hUGE_mute_channel(HT_CH2, 0);
 #define MUSIC_DRIVER_CH2_OFF hUGE_mute_channel(HT_CH2, 1);
 #define MUSIC_DRIVER_CH4_ON hUGE_mute_channel(HT_CH4, 0);
 #define MUSIC_DRIVER_CH4_OFF hUGE_mute_channel(HT_CH4, 1);
-
-// For GBT Player
-#define MUSIC_DRIVER_CH2_ON gbt_enable_channels(GBT_CHAN_2);
-#define MUSIC_DRIVER_CH2_OFF gbt_enable_channels(GBT_CHAN_2);
-#define MUSIC_DRIVER_CH4_ON gbt_enable_channels(GBT_CHAN_4);
-#define MUSIC_DRIVER_CH4_OFF gbt_enable_channels(GBT_CHAN_4);
 ```
 
 There is also a flag for mono music, if your song doesn't modify panning (Register NR51) at all but your effects do, set it to 1, this will reset the panning after the effect is played to avoid parts of the song being off-panned after an effect.
