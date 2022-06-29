@@ -24,9 +24,9 @@ Also, if you make an SFX that uses all 32 rows on FX-Hammer, you'll notice that 
 **I also recommend being familiar with things such as binary numbers and hexadecimal numbers, it's not necessary but it'll help you understand this better since most values used in the editor are hexadecimal.**
 
 ## Getting Started
-First and foremost, get FX-Hammer from [here](https://www.pouet.net/prod.php?which=17337), you'll see a lot of files since this release includes it's accompanying music driver and other tools, but it's the `hammered.gb` file inside the `SFX` folder. This is (as far as I know) the latest release of the editor, sadly the source is supposedly lost so don't expect a new release any time soon. 
+First and foremost, get FX-Hammer from [here](https://www.pouet.net/prod.php?which=17337), you'll see a lot of files since this release includes it's accompanying music driver and other tools, but we're looking for `fxhammer.zip`, here's you'll find two other files, `hammered.gb` and `fxbank.sav`, rename this last one to `hammered.sav` to make sure it's loaded by your emulator once you load the ROM. This is (as far as I know) the latest release of the editor, sadly the source is supposedly lost so don't expect a new release any time soon.
 
-The ROM should work on any Game Boy emulator or real hardware using a flash cart, personally I recommend running it in GBC mode for the pretty colors, but any model should work, just make sure that you can access the save data (Normally called `hammered.sav` or `hammered.srm`) later, also, **make sure to run the ROM alongside the included .sav file**.
+The ROM should work on any Game Boy emulator or real hardware using a flash cart, personally I recommend running it in GBC mode for the pretty colors, but any model should work, just make sure that you can access the save data (`hammered.sav`) later, also, **make sure to run the ROM alongside the included .sav file**.
 
 
 ![First thing](/img/first_thing.bmp)
@@ -48,7 +48,7 @@ The default save file comes with 10 effects already written, you can play around
 
 ![SaveBug](/img/save_bug.bmp)
 
-If the first thing you see after booting it up is something like this instead, **don't worry!** It probably just means you loaded the ROM without the save file included alongside the editor, meaning your emulator of choice made a blank one which is read as garbage data, just delete the .sav file your emulator created and replace it with the one that came with the editor.
+If the first thing you see after booting it up is something like this instead, **don't worry!** It probably just means you loaded the ROM without the save file included alongside the editor, meaning your emulator of choice made a blank one which is read as garbage data, just delete the .sav file your emulator created and replace it with `fxbank.sav` renamed as `hammered.sav`.
 
 ## Controls
 
