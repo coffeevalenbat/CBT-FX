@@ -1,9 +1,3 @@
-# Used for headers
-ch_used_str = [""] * 241
-ch_used_str[48] = "Noise channel"
-ch_used_str[192] = "Duty channel 2"
-ch_used_str[240] = "Duty channel 2 & Noise channel"
-
 # Frequency table
 CH2freqs = [44,156,262,363,457,547,631,710,786,854,923,986,1046,1102,1155,1205,1253,1297,1339,1379,1417,1452,1486,1517,1546,1575,1602,1627,1650,1673,1694,1714,1732,1750,1767,1783,1798,1812,1825,1837,1849,1860,1871,1881,1890,1899,1907,1915,1923,1930,1936,1943,1949,1954,1959,1964,1969,1974,1978,1982,1985,1988,1992,1995,1998,2001,2004,2006,2009,2011,2013,2015]
 
@@ -27,16 +21,64 @@ SFX data:		0x400 + (fxnum * 256)
 WARNING: FX Hammer pan values are inverted
 """
 
+# Taken from some website, ikik
+def swapbits(n, p1, p2):
+    bit1 = (n >> p1) & 1
+    bit2 = (n >> p2) & 1
+    x = (bit1 ^ bit2)
+    x = (x << p1) | (x << p2)
+    result = n ^ x
+    return result
+
+def array_to_hex(a):
+	b = []
+	for i in range(0, len(a)):
+		b.append("0x%0.2X" % a[i])
+
+	b = str(b).replace("'","").replace(" ","")[1:-1]
+	return '\n'.join(textwrap.wrap(b, 45))
+
+def _header():
+	b = """/*
+
+	""" + filename + """
+
+	Sound Effect File.
+	
+	Info:
+		Length			:	""" + str(fxh_len) + """
+		Priority		:	""" + str(fxh_pry) + """
+		Channels used	:	""" + ch_used_str + """
+		SGB Support		:	""" + ["No", "Yes"][(header & 64) >> 6] + """"""
+	if sgb:
+		b += """
+		SGB SFX Table	:	""" + sgb[0] + """
+		SGB SFX ID		:	""" + sgb[1] + """
+		SGB SFX	Pitch	:	""" + sgb[2] + """
+		SGB SFX Volume	:	""" + sgb[3] + """"""
+	b += """
+*/
+
+"""
+	return b
+
+import textwrap
 import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("fxsav", help="FX Hammer .sav file (Normally called 'hammered.sav').")
 parser.add_argument("fxnum", help="Index of the desired SFX to export.")
 parser.add_argument("out", help="Folder where .c and .h files will be saved.")
 parser.add_argument("--fxammo", help="Number of SFX to export (starts at fxnum, ends at fxnum + fxammo)")
-parser.add_argument("--fxnamelist", help="Text file with all the names for the SFX, each on one line (The 'SFX_' Prefix is added at the start).")
+parser.add_argument("--fxnamelist", help="Text file with all the names for the SFX, each on one line (SFX names shouldn't have spaces), you can add 4 values after the SFX name to define SGB sound values (See --sgb parameter).")
+parser.add_argument("--sgb", help="Add Super Game Boy support.", nargs=4, metavar=("FX_TAB", "FX_ID", "FX_PITCH", "FX_VOL"))
 parser.add_argument("--fxinv", help="Invert pan values for SFX (FX Hammer has them inverted by default, without this flag, the panning will be corrected)", action="store_true")
+parser.add_argument("--fxmono", help="Avoid all panning writes and store as mono.", action="store_true")
 
 args = parser.parse_args()
+
+sgb = []
+if args.sgb:
+	args.sgb.copy()
 
 fxsav = open(args.fxsav,"rb")
 
@@ -50,6 +92,21 @@ if args.fxammo:
 	loop = int(args.fxammo)
 for n in range(int(args.fxnum), int(args.fxnum) + loop):
 	fxnum = n
+	bk_pan = -1 # Not an 8 bit integer to assure that panning is stored at least once
+
+	# Get filename from textfile
+
+	filename = "SFX_" + (("{0:X}").format(fxnum)).zfill(2)
+	if args.fxnamelist:
+		txt = fxnamelist.readline().replace("\n",'').split(" ")
+		filename = txt[0]
+		# Check length
+		if len(txt) > 1: # More parameters on string means SGB
+			sgb = [txt[1], txt[2], txt[3], txt[4]]
+		else:
+			sgb = []
+			if args.sgb:
+				args.sgb.copy()
 
 	# Export header
 	fxh_pry = 0		# Export priority
@@ -64,14 +121,6 @@ for n in range(int(args.fxnum), int(args.fxnum) + loop):
 
 	def fxh_get():
 		return int.from_bytes(fxsav.read(1), "big")
-	# Taken from some website, ikik
-	def swapbits(n, p1, p2):
-	    bit1 = (n >> p1) & 1
-	    bit2 = (n >> p2) & 1
-	    x = (bit1 ^ bit2)
-	    x = (x << p1) | (x << p2)
-	    result = n ^ x
-	    return result
 
 	# Get the priority
 	fxsav.seek(0x200 + fxnum)
@@ -82,14 +131,40 @@ for n in range(int(args.fxnum), int(args.fxnum) + loop):
 	fxh_chu = fxh_get()
 	ch = 0 # Temp value to make my life easier
 	if fxh_chu & 0x30: # If CH2
-		ch |= 12
+		ch |= 8
+		ch_used_str = "Noise channel"
+	if fxh_chu == 0x33:
+		ch_used_str = "Duty channel 2 & Noise channel"
 	if fxh_chu & 0x03: # If CH4
-		ch |= 3
+		ch |= 2
+		ch_used_str = "Duty channel 2"
 	fxh_chu = ch << 4
-	# This basically converts the 0x33 based FX Hammer mask value into a 0b11110000 value, the higher 2 enabled bits mean CH2, the bottom mean CH4
+	# This basically converts the 0x33 based FX Hammer mask value into a 0b10100000 value, bit 7 means CH2 and bit 5 means CH4
 
 	if fxh_chu == 0: # If no channels are used, the sfx is empty, abort
 		sys.exit("ERROR: SFX #" + (("{0:X}").format(fxnum)).zfill(2) + " is empty, aborting conversion.")
+
+	# Add header
+	header = fxh_chu | fxh_pry
+	if sgb:
+		header |= 64 # 6th bit = SGB Support
+	bufadd(header)
+	bufadd(0) # Add placeholder value for later
+
+	# Check SGB
+	if sgb:
+		bufadd(65) # Command byte ((SGB_SOUND << 3) | 1)
+		if sgb[0] == "A":
+			bufadd(int(sgb[1])) # Sound Effect A
+			bufadd(0) # Sound Effect B
+		elif sgb[0] == "B":
+			bufadd(0) # Sound Effect A
+			bufadd(int(sgb[1])) # Sound Effect B
+		if sgb[0] == "A":
+			bufadd(int(sgb[2]) | (int(sgb[3]) << 2)) # Sound effect attributes (A)
+		elif sgb[0] == "B":
+			bufadd((int(sgb[2]) << 4) | (int(sgb[3]) << 6)) # Sound effect attributes (B)
+		bufadd(0) # Music Score Code (Unused)
 
 	# Get all data (Length)
 	fxsav.seek(0x400 + (fxnum * 256))
@@ -110,15 +185,19 @@ for n in range(int(args.fxnum), int(args.fxnum) + loop):
 		else:
 			break # Got to the end of the SFX, break out of the read loop
 		
-		# Length			Necessary
-		bufadd(temp_buf[0] - 1)
-
-		# Frame pan			Necessary
+		# Length and frame pan
 		pan = temp_buf[1] | temp_buf[5]
 		if not args.fxinv:
 			pan = swapbits(pan, 7, 3)
 			pan = swapbits(pan, 5, 1)
-		bufadd(pan) # NR51 values
+		if args.fxmono:
+			pan = 0xaa
+		if pan != bk_pan:
+			bufadd((temp_buf[0] - 1) | 0x80)
+			bufadd(pan) # NR51 values
+			bk_pan = pan
+		else:
+			bufadd(temp_buf[0] - 1)
 
 		# CH2 Duty (NR21)
 		if fxh_chu & 128:
@@ -139,41 +218,21 @@ for n in range(int(args.fxnum), int(args.fxnum) + loop):
 		if fxh_chu & 32:
 			bufadd(temp_buf[7])
 
-	filename = "SFX_" + (("{0:X}").format(fxnum)).zfill(2)
-	if args.fxnamelist:
-		filename = "SFX_" + fxnamelist.readline().replace("\n",'')
-
-	def c_header():
-		return """/*
-
-		""" + filename + """
-
-		Sound Effect File.
-		
-		Info:
-			Length			:	""" + str(fxh_len) + """
-			Priority		:	""" + str(fxh_pry) + """
-			Channels used	:	""" + ch_used_str[fxh_chu] + """
-		
-		This file was generated by hammer2cbt
-
-	*/
-	"""
+	# Replace placeholder value for fxh_len
+	fxh_buf[1] = fxh_len + 1
 
 	# Write to C file
 	if args.out == ".":
 		args.out = ""
 	Cfile = open(args.out + filename + ".c", "w")
-	Cfile.write(c_header())
+	Cfile.write(_header())
 	Cfile.write("const unsigned char " + filename + "[] = {\n")
-	Cfile.write(str(fxh_chu | fxh_pry) + ", // Header\n")
-	Cfile.write(str(fxh_len) + ",\n")
-	Cfile.write(str(fxh_buf)[1:-1])
+	Cfile.write(array_to_hex(fxh_buf))
 	Cfile.write("\n};")
 	Cfile.close()
 
 	Hfile = open(args.out + filename + ".h", "w")
-	Hfile.write(c_header())
+	Hfile.write(_header())
 	Hfile.write("#ifndef __" + filename + "_h_INCLUDE\n")
 	Hfile.write("#define __" + filename + "_h_INCLUDE\n")
 	Hfile.write("#define CBTFX_PLAY_" + filename + " CBTFX_init(&" + filename + "[0])\n")
@@ -186,9 +245,10 @@ for n in range(int(args.fxnum), int(args.fxnum) + loop):
 
 	size_count += len(fxh_buf) + 2
 
+fxsav.close()
+
 if args.fxammo:
 	print("Final size: " + str(size_count) + " bytes.\n")
 
 if args.fxnamelist:
 	fxnamelist.close()
-

@@ -28,11 +28,19 @@ all:	prepare $(BINS)
 
 rebuild:
 	make clean
-	make hammer
+	make default_sfx
 	make
 
-hammer:
-	python3 hammer2cbt.py --fxammo 10 hammered.sav 0 include/sfx/
+# Choose any of these 3 to check the different SFX banks
+
+default_sfx:
+	python3 hammer2cbt.py --fxammo 10 --fxnamelist filenames.txt hammered.sav 0 include/sfx/
+
+nes_sfx:
+	python3 hammer2cbt.py --fxammo 10 --fxnamelist filenames.txt nes_sfx.sav 0 include/sfx/
+
+gbwordyl_sfx:
+	python3 hammer2cbt.py --fxammo 10 --fxnamelist filenames.txt gbwordyl.sav 10 include/sfx/
 
 make.bat: Makefile
 	@echo "REM Automatically generated from Makefile" > make.bat
@@ -57,7 +65,7 @@ $(OBJDIR)/%.s:	$(SRCDIR)/%.c
 
 # Link the compiled object files into a .gb ROM file
 $(BINS):	$(OBJS)
-	$(LCC) -Wm-yn$(PROJECTNAME) $(LCCFLAGS) -o $(BINS) $(OBJS)
+	$(LCC) -Wm-ys -Wm-yn$(PROJECTNAME) $(LCCFLAGS) -o $(BINS) $(OBJS)
 	
 prepare:
 	mkdir -p $(OBJDIR)

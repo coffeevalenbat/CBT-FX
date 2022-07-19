@@ -1,4 +1,5 @@
 #include <gb/gb.h>
+#include <gb/sgb.h>
 #include <stdio.h>
 #include <gbdk/console.h>
 #include <stddef.h>
@@ -19,38 +20,51 @@ const unsigned char * SFX_list[] = { &SFX_00[0], &SFX_01[0], &SFX_02[0], &SFX_03
 
 extern const hUGESong_t bg_song;
 
-int joypad_p();
+// Add a mention to this and modify it if SGB mode is on
+extern uint8_t CBTFX_SGB;
+
+uint8_t joypad_p();
 uint8_t menu_counter = 0;
 uint8_t joypad_last_frame = 0;
 uint8_t joypad_current_frame = 0;
 uint8_t music = 0;
 
-int joypad_p(){
+uint8_t joypad_p(){
     joypad_last_frame = joypad_current_frame;
     joypad_current_frame = joypad();
     return (joypad_current_frame & ~joypad_last_frame);
 }
 
 void update_screen(){
-	cls();
-	gotoxy(0, 0);
-    printf(" \n  ");
-	printf("CBT-FX DEMO CART");
-
-	printf("\n\n\n\n\n\n       SFX_%hx", menu_counter);
-	
-	printf("\n\n\n\n   Press START to\n    toggle music\n\n\n Press <- and -> to  pick and A to play");
+	gotoxy(11,7);
+	printf("%hx", menu_counter);
 }
+
+void update_audio(){
+	if(music) hUGE_dosound();
+	CBTFX_update();
+}
+
 void main(void){
+	
+	// Check SGB (bit 6 should at least be on if SGB)
+	if(sgb_check()){
+		CBTFX_SGB = 0xff;
+	}
 
     // Enable audio output
     NR52_REG = 0x80;
-    NR51_REG = 0xFF;
+    NR51_REG = 0xff;
     NR50_REG = 0x77;
     
     __critical {
-        add_VBL(CBTFX_update);
+        add_VBL(update_audio);
     }
+
+    printf(" \n  ");
+	printf("CBT-FX DEMO CART");
+	printf("\n\n\n\n\n\n       SFX_");	
+	printf("\n\n\n\n   Press START to\n    toggle music\n\n\n Press <- and -> to  pick and A to play");
 
 	update_screen();
 
@@ -84,18 +98,13 @@ void main(void){
 				update_screen();
 				break;
 			case J_START:
-				// Very dirty fix to stop hUGE...
 				if(music){
-					remove_VBL(hUGE_dosound);
-					NR52_REG = 0;
 					// Settings NR52 to 0 clears all sound regs
+					NR52_REG = 0;
 				    NR52_REG = 0x80;
-				    NR51_REG = 0xFF;
+				    NR51_REG = 0xff;
 				    NR50_REG = 0x77;
 				}else{
-					remove_VBL(CBTFX_update);
-				    add_VBL(hUGE_dosound);
-			        add_VBL(CBTFX_update);
 					hUGE_init(&bg_song);
 				}
 				music = ~music;
