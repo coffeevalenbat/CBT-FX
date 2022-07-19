@@ -7,7 +7,7 @@
 	Info:
 		Length			:	12
 		Priority		:	0
-		Channels used	:	Duty channel 2
+		Channels used	:	Duty channel 2 & Noise channel
 		SGB Support		:	Yes
 		SGB SFX Table	:	A
 		SGB SFX ID		:	5

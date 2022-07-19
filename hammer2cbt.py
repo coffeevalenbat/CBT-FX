@@ -133,11 +133,11 @@ for n in range(int(args.fxnum), int(args.fxnum) + loop):
 	if fxh_chu & 0x30: # If CH2
 		ch |= 8
 		ch_used_str = "Noise channel"
-	if fxh_chu == 0x33:
-		ch_used_str = "Duty channel 2 & Noise channel"
 	if fxh_chu & 0x03: # If CH4
 		ch |= 2
 		ch_used_str = "Duty channel 2"
+	if fxh_chu == 0x33:
+		ch_used_str = "Duty channel 2 & Noise channel"
 	fxh_chu = ch << 4
 	# This basically converts the 0x33 based FX Hammer mask value into a 0b10100000 value, bit 7 means CH2 and bit 5 means CH4
 
